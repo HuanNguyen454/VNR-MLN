@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn thi VNR202 & MLN131</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a href="#" class="brand">📚 Ôn thi trắc nghiệm</a>
+  <nav>
+    <a href="#VNR202" data-subj="VNR202">VNR202</a>
+    <a href="#MLN131" data-subj="MLN131">MLN131</a>
+    <button id="themeBtn" title="Đổi giao diện sáng/tối">🌓</button>
+  </nav>
+</header>
+
+<main id="home" class="view">
+  <h1>Chọn môn để ôn</h1>
+  <div class="subjects">
+    <a class="subj" href="#VNR202">
+      <h2>VNR202</h2>
+      <p>Lịch sử Đảng Cộng sản Việt Nam</p>
+      <span class="meta" id="metaVNR202"></span>
+    </a>
+    <a class="subj" href="#MLN131">
+      <h2>MLN131</h2>
+      <p>Chủ nghĩa xã hội khoa học</p>
+      <span class="meta" id="metaMLN131"></span>
+    </a>
+  </div>
+  <p class="hint">Mẹo: Phím <kbd>Space</kbd> lật thẻ, <kbd>←</kbd> <kbd>→</kbd> chuyển thẻ, <kbd>1</kbd> đánh dấu "Chưa thuộc", <kbd>2</kbd> "Đã thuộc". Ở chế độ trắc nghiệm, bấm <kbd>A</kbd>–<kbd>F</kbd> để chọn đáp án. Tiến độ được lưu trên trình duyệt của bạn.</p>
+</main>
+
+<main id="study" class="view" hidden>
+  <div class="toolbar">
+    <h1 id="subjTitle"></h1>
+    <div class="row">
+      <label>Phần/chương
+        <select id="groupSel"></select>
+      </label>
+      <label>Lọc
+        <select id="filterSel">
+          <option value="all">Tất cả</option>
+          <option value="unknown">Chưa thuộc</option>
+          <option value="new">Chưa học</option>
+          <option value="known">Đã thuộc</option>
+        </select>
+      </label>
+      <label>Chế độ
+        <select id="modeSel">
+          <option value="flash">Lật thẻ</option>
+          <option value="quiz">Trắc nghiệm</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <input id="searchBox" type="search" placeholder="Tìm câu hỏi theo từ khóa…">
+      <button id="shuffleBtn">🔀 Xáo trộn</button>
+      <button id="resetBtn" class="ghost">Xóa tiến độ</button>
+    </div>
+    <div class="progress"><div id="progBar"></div></div>
+    <div id="stats" class="stats"></div>
+  </div>
+
+  <section id="cardArea"></section>
+
+  <div class="nav">
+    <button id="prevBtn">← Trước</button>
+    <span id="pos"></span>
+    <button id="nextBtn">Sau →</button>
+  </div>
+  <div class="nav marks">
+    <button id="badBtn" class="bad">✗ Chưa thuộc</button>
+    <button id="goodBtn" class="good">✓ Đã thuộc</button>
+  </div>
+</main>
+
+<footer>Dữ liệu từ ngân hàng câu hỏi đã lọc trùng VNR202 (527 câu) và MLN131 (1148 câu).</footer>
+
+<script src="data/vnr202.js"></script>
+<script src="data/mln131.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
