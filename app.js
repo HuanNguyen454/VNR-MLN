@@ -45,8 +45,20 @@
   // ---------- state ----------
   let subj = null, deck = [], pos = 0, flipped = false, marks = {};
   let quizSel = new Set(), quizDone = false;
-  const prefs = () => store.get('prefs-' + subj, { view: 0, filter: 'all', mode: 'flash' });
-  const savePrefs = () => store.set('prefs-' + subj, { view: +$('groupSel').value, filter: $('filterSel').value, mode: $('modeSel').value });
+  // Lưu toàn bộ trạng thái học (bộ lọc, chế độ, thứ tự xáo trộn, câu đang xem) để tải lại trang vẫn học tiếp đúng chỗ
+  let shuffled = false;
+  const prefs = () => Object.assign({ view: 0, filter: 'all', mode: 'flash', search: '', order: null, cur: null, pos: 0 },
+    store.get('prefs-' + subj, {}));
+  function savePrefs() {
+    if (!subj) return;
+    store.set('prefs-' + subj, {
+      view: +$('groupSel').value, filter: $('filterSel').value, mode: $('modeSel').value,
+      search: $('searchBox').value,
+      order: shuffled ? deck.map((c) => c.id) : null,
+      cur: deck[pos] ? deck[pos].id : null, pos: pos
+    });
+    store.set('lastSubj', subj);
+  }
 
   function route() {
     const h = decodeURIComponent(location.hash.slice(1));
@@ -60,11 +72,11 @@
     const p = prefs();
     $('groupSel').value = Math.min(p.view, d.views.length - 1);
     $('filterSel').value = p.filter; $('modeSel').value = p.mode;
-    $('searchBox').value = '';
-    build(false);
+    $('searchBox').value = p.search || '';
+    build(false, p);
   }
 
-  function build(shuffle) {
+  function build(shuffle, restore) {
     const d = DATA[subj];
     const view = d.views[+$('groupSel').value] || d.views[0];
     const f = $('filterSel').value;
@@ -78,14 +90,30 @@
       if (q && !norm(c.q + ' ' + c.o.map((o) => o[1]).join(' ')).includes(q)) return false;
       return true;
     });
-    if (shuffle) for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-    pos = 0; render();
+    pos = 0;
+    if (shuffle) {
+      for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+      shuffled = true;
+    } else if (restore) {
+      shuffled = false;
+      if (restore.order) {
+        const idx = {}; restore.order.forEach((id, i) => { idx[id] = i; });
+        deck.sort((a, b) => (idx[a.id] ?? 1e9) - (idx[b.id] ?? 1e9));
+        shuffled = true;
+      }
+      const i = restore.cur ? deck.findIndex((c) => c.id === restore.cur) : -1;
+      pos = i >= 0 ? i : Math.max(0, Math.min(restore.pos || 0, deck.length - 1));
+    } else {
+      shuffled = false;
+    }
+    render();
   }
 
   function render() {
     flipped = false; quizSel = new Set(); quizDone = false;
     const area = $('cardArea');
     updateStats();
+    savePrefs();
     if (!deck.length) {
       area.innerHTML = '<div class="empty">Không có thẻ nào phù hợp với bộ lọc hiện tại.</div>';
       $('pos').textContent = '0 / 0'; return;
@@ -195,5 +223,8 @@
   });
 
   window.addEventListener('hashchange', route);
+  // Mở trang không kèm môn -> tự vào lại môn học gần nhất
+  const last = store.get('lastSubj', null);
+  if (!location.hash && DATA[last]) history.replaceState(null, '', '#' + last);
   route();
 })();
