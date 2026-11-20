@@ -106,6 +106,6 @@ button.ghost{color:var(--muted)}
   .q{font-size:.98rem}
   .opts li{padding:5px 9px;font-size:.92rem}
   #pos{min-width:56px;font-size:.78rem}
-  #badBtn,#goodBtn{font-size:.82rem;padding:8px 4px}
+  #badBtn,#goodBtn{font-size:.8rem;padding:8px 2px;white-space:nowrap}
   .flip-hint{display:none}
 }
