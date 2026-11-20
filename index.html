@@ -31,13 +31,14 @@
     </a>
   </div>
   <p class="hint">Mẹo: Phím <kbd>Space</kbd> lật thẻ, <kbd>←</kbd> <kbd>→</kbd> chuyển thẻ, <kbd>1</kbd> đánh dấu "Chưa thuộc", <kbd>2</kbd> "Đã thuộc". Ở chế độ trắc nghiệm, bấm <kbd>A</kbd>–<kbd>F</kbd> để chọn đáp án. Tiến độ được lưu trên trình duyệt của bạn.</p>
+  <p class="hint">Dữ liệu từ ngân hàng câu hỏi đã lọc trùng VNR202 (527 câu) và MLN131 (1148 câu).</p>
 </main>
 
 <main id="study" class="view" hidden>
   <div class="toolbar">
     <h1 id="subjTitle"></h1>
     <div class="row">
-      <label>Phần/chương
+      <label class="wide">Phần/chương
         <select id="groupSel"></select>
       </label>
       <label>Lọc
@@ -54,11 +55,9 @@
           <option value="quiz">Trắc nghiệm</option>
         </select>
       </label>
-    </div>
-    <div class="row">
-      <input id="searchBox" type="search" placeholder="Tìm câu hỏi theo từ khóa…">
-      <button id="shuffleBtn">🔀 Xáo trộn</button>
-      <button id="resetBtn" class="ghost">Xóa tiến độ</button>
+      <input id="searchBox" type="search" placeholder="Tìm câu hỏi…">
+      <button id="shuffleBtn" title="Xáo trộn">🔀</button>
+      <button id="resetBtn" class="ghost" title="Xóa tiến độ">↺</button>
     </div>
     <div class="progress"><div id="progBar"></div></div>
     <div id="stats" class="stats"></div>
@@ -67,17 +66,13 @@
   <section id="cardArea"></section>
 
   <div class="nav">
-    <button id="prevBtn">← Trước</button>
-    <span id="pos"></span>
-    <button id="nextBtn">Sau →</button>
-  </div>
-  <div class="nav marks">
+    <button id="prevBtn" title="Câu trước (←)">←</button>
     <button id="badBtn" class="bad">✗ Chưa thuộc</button>
+    <span id="pos"></span>
     <button id="goodBtn" class="good">✓ Đã thuộc</button>
+    <button id="nextBtn" title="Câu sau (→)">→</button>
   </div>
 </main>
-
-<footer>Dữ liệu từ ngân hàng câu hỏi đã lọc trùng VNR202 (527 câu) và MLN131 (1148 câu).</footer>
 
 <script src="data/vnr202.js"></script>
 <script src="data/mln131.js"></script>

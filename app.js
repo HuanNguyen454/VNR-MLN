@@ -108,7 +108,6 @@
         (c.note ? '<div class="note">' + esc(c.note) + '</div>' : '') + '</div>' +
         '</div></div><div class="flip-hint">Bấm vào thẻ hoặc nhấn Space để lật</div>';
       $('card').onclick = flip;
-      fitHeight();
     } else {
       const opts = c.o.map((o) => '<li data-k="' + o[0] + '"><b>' + o[0] + '.</b>' + esc(o[1]) + '</li>').join('');
       area.innerHTML = '<div class="quiz" id="quiz"><span class="tag">' + tag + '</span>' + st + '<p class="q">' + esc(c.q) + '</p>' + multi +
@@ -120,16 +119,6 @@
     }
   }
 
-  function fitHeight() {
-    const card = $('card'); if (!card) return;
-    const inner = card.querySelector('.card-inner');
-    const faces = card.querySelectorAll('.face');
-    inner.style.minHeight = '';
-    let h = 0;
-    faces.forEach((f) => { f.style.position = 'relative'; h = Math.max(h, f.offsetHeight); f.style.position = ''; });
-    inner.style.minHeight = Math.max(h, 240) + 'px';
-  }
-  window.addEventListener('resize', fitHeight);
 
   function flip() { const c = $('card'); if (!c) return; flipped = !flipped; c.classList.toggle('flipped', flipped); }
 
